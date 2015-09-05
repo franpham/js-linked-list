@@ -51,7 +51,7 @@ function linkedListGenerator(){
     if (num >= length) {
       return false;
     }
-    else if (length === 1) {
+    else if (num === 0 && length === 1) {
       head = null;
       tail = null;
     } else {
