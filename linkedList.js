@@ -4,5 +4,100 @@
  * @return {Object} an object exposing methods to be used to manipulate a linked list
  */
 function linkedListGenerator(){
+  var head = null;
+  var tail = null;
+  var length = 0;
 
+  function createNode(val) {
+    return {
+      value : val,
+      next : null
+    };
+  }
+
+  function _getHead() {
+    return head;
+  }
+
+  function _getTail() {
+    return tail;
+  }
+
+  function _get(num) {
+    var node = head;
+    if (num >= length) {
+      return false;
+    }
+    for (var i = 0; i < num; i++) {
+      node = node.next;
+    }
+    return node;
+  }
+
+  function _add(val) {
+    var node = createNode(val);
+    if (head === null) {  // no nodes exist;
+      head = node;
+      tail = node;
+    } else {
+      tail.next = node;   // link new node;
+      tail = node;        // update tail;
+    }
+    length++;
+    return node;
+  }
+
+  function _remove(num) {
+    if (num >= length) {
+      return false;
+    }
+    else if (length === 1) {
+      head = null;
+      tail = null;
+    } else {
+      var node = _get(num);
+      var prev = _get(num - 1);
+      if (num === 0) {
+        head = head.next;
+      }
+      if (num === length - 1) {
+        tail = prev;           // set new tail;
+        prev.next = null;      // relink tail;
+      }
+      else {
+        prev.next = node.next;    // relink nodes;
+      }
+    }
+    length--;
+  }
+
+  // contrary to project's specification, must insert into end, as required by the tests inserting at end of urlList && bookList (index 1);
+  function _insert(val, num) {
+    if (num > length - 1 || num < 0) {
+      return false;
+    }
+    else if (num === 0) {   // insert at head;
+      var node = createNode(val);
+      node.next = head;
+      head = node;          // set new head;
+    } else {
+      var node = createNode(val);
+      var prev = _get(num - 1);
+      var next = _get(num);
+
+      prev.next = node;       // insert new node;
+      node.next = next;       // relink tail;
+    }
+    length++;
+  }
+
+
+  return {
+    getHead : _getHead,
+    getTail : _getTail,
+    get : _get,
+    add : _add,
+    remove : _remove,
+    insert : _insert
+  };
 }
