@@ -7,6 +7,7 @@ function linkedListGenerator(){
   var head = null;
   var tail = null;
   var length = 0;
+  var current = null;
 
   function createNode(val) {
     return {
@@ -37,8 +38,8 @@ function linkedListGenerator(){
   function _add(val) {
     var node = createNode(val);
     if (head === null) {  // no nodes exist;
-      head = node;
-      tail = node;
+      head = tail = node;
+      current = node;
     } else {
       tail.next = node;   // link new node;
       tail = node;        // update tail;
@@ -63,8 +64,7 @@ function linkedListGenerator(){
       if (num === length - 1) {
         tail = prev;           // set new tail;
         prev.next = null;      // relink tail;
-      }
-      else {
+      } else {
         prev.next = node.next;    // relink nodes;
       }
     }
@@ -91,6 +91,15 @@ function linkedListGenerator(){
     length++;
   }
 
+  function _hasNext() {
+    return current != null && (current.next !== null || current === tail);
+  }
+
+  function _next() {
+    var temp = current;
+    current = current.next;
+    return temp.value;
+  }
 
   return {
     getHead : _getHead,
@@ -98,6 +107,23 @@ function linkedListGenerator(){
     get : _get,
     add : _add,
     remove : _remove,
-    insert : _insert
+    insert : _insert,
+    hasNext : _hasNext,
+    next : _next
   };
+
+}
+
+var ll = linkedListGenerator();
+ll.add('ant');
+ll.add('bat');
+ll.add('cat');
+ll.add('dog');
+ll.add('elephant');
+ll.add('fish');
+ll.add('giraffe');
+ll.add('hippo');
+
+while (ll.hasNext()) {
+  console.log('ll.next() = ', ll.next());
 }
