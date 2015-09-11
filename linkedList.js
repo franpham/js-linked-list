@@ -39,7 +39,6 @@ function linkedListGenerator(){
     var node = createNode(val);
     if (head === null) {  // no nodes exist;
       head = tail = node;
-      current = node;
     } else {
       tail.next = node;   // link new node;
       tail = node;        // update tail;
@@ -71,24 +70,31 @@ function linkedListGenerator(){
     length--;
   }
 
-  // contrary to project's specification, must insert into end, as required by the tests inserting at end of urlList && bookList (index 1);
   function _insert(val, num) {
-    if (num > length - 1 || num < 0) {
-      return false;
-    }
-    else if (num === 0) {   // insert at head;
+    if (num === 0) {   // insert at head;
       var node = createNode(val);
       node.next = head;
       head = node;          // set new head;
-    } else {
+      if (length === 0) {
+        tail = node;
+      }
+    }
+    else if (num > length - 1 || num < 0) {
+      return false;
+    }
+    else {
       var node = createNode(val);
       var prev = _get(num - 1);
       var next = _get(num);
 
       prev.next = node;       // insert new node;
-      node.next = next;       // relink tail;
+      node.next = next;       // relink nodes; tail is the same for length - 1;
     }
     length++;
+  }
+
+  function _reset() {
+    current = head;
   }
 
   function _hasNext() {
@@ -109,11 +115,12 @@ function linkedListGenerator(){
     remove : _remove,
     insert : _insert,
     hasNext : _hasNext,
-    next : _next
+    next : _next,
+    reset : _reset
   };
-
 }
 
+/*
 var ll = linkedListGenerator();
 ll.add('ant');
 ll.add('bat');
@@ -127,3 +134,4 @@ ll.add('hippo');
 while (ll.hasNext()) {
   console.log('ll.next() = ', ll.next());
 }
+*/
